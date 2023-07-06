@@ -1,7 +1,8 @@
-package com.arincatlamaz.chatconnect
+package com.arincatlamaz.chatconnect.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.arincatlamaz.chatconnect.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
