@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/splashFragment"
+    android:id="@+id/main_nav_graph">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.arincatlamaz.chatconnect.view.SplashFragment"
+        android:label="fragment_splash">
+        <action
+            android:id="@+id/splashToOnBoarding"
+            app:destination="@id/onBoardingFragment" />
+        <action
+            android:id="@+id/splashToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.arincatlamaz.chatconnect.view.LoginFragment"
+        android:label="fragment_login"/>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.arincatlamaz.chatconnect.view.SignUpFragment"
+        android:label="fragment_sign_up">
+        <action
+            android:id="@+id/signUpToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.arincatlamaz.chatconnect.view.OnBoardingFragment"
+        android:label="fragment_on_boarding">
+        <action
+            android:id="@+id/onBoardingToSignup"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/onBoardingToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/messages"
+        android:icon="@drawable/message_icon"
+        android:title="@string/message"/>
+
+    <item
+        android:id="@+id/calls"
+        android:icon="@drawable/call_icon"
+        android:title="@string/calls"/>
+
+    <item
+        android:id="@+id/contacts"
+        android:icon="@drawable/contacts_icon"
+        android:title="@string/contacts"/>
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/settings_icon"
+        android:title="@string/settings"/>
+</menu>
