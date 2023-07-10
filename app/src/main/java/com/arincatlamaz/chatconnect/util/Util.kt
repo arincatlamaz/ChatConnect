@@ -17,26 +17,26 @@ import com.google.firebase.ktx.Firebase
 private lateinit var auth: FirebaseAuth
 
 fun splashDelay(activity: FragmentActivity, context: Context, fragment: Fragment?){
-    val extras: Bundle? = activity.intent?.extras
+    /*val extras: Bundle? = activity.intent?.extras
 
     if ((extras != null) && extras.containsKey("logout")){
         val logout: Boolean = extras.getBoolean("logout")
         if (logout){
             fragment?.findNavController()?.navigate(R.id.splashToLogin)
         }
-    } else{
+    } else{*/
         val delay = 2000L
         Handler(Looper.getMainLooper()).postDelayed({
             fragment?.findNavController()?.navigate(R.id.splashToOnBoarding)
         }, delay)
 
-        auth = Firebase.auth
+        /*auth = Firebase.auth
         val currentUser = auth.currentUser
 
         if (currentUser != null){
             activity.startActivity(Intent(context, MainActivity::class.java))
         }
-    }
+    }*/
 }
 
 

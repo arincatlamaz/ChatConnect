@@ -25,92 +25,64 @@ class AuthViewModel(application: Application) : BaseVM(application) {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _currentUser = MutableLiveData<FirebaseUser?>()
 
-    fun signUp(
-        email: EditText,
-        password: EditText,
-        username: EditText,
-        context: Context,
-        navController: NavController
-    ) {
-        if (username.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
-            Toast.makeText(context, "Please fill in all fields!", Toast.LENGTH_LONG).show()
-            return
+    fun signUp(email: EditText, password: EditText, username: EditText, context: Context, navController: NavController) {
+
+        launch {
+            if (username.text.isEmpty() || email.text.isEmpty() || password.text.isEmpty()) {
+                Toast.makeText(context, "Please fill in all fields!", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+
+            val database = FirebaseDatabase.getInstance()
+            val usersRef = database.getReference("users")
+            val queryRef = usersRef.orderByChild("email").equalTo(email.text.toString())
+
+            queryRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) { Toast.makeText(context, "E-mail is already registered!", Toast.LENGTH_LONG).show()
+                        email.text.clear()
+                    } else {
+                        val usernameRef = usersRef.orderByChild("username").equalTo(username.text.toString())
+                        usernameRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.exists()) {
+                                    Toast.makeText(context, "Username is already taken!", Toast.LENGTH_LONG).show()
+                                    username.text.clear()
+                                } else {
+                                    firebaseAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
+                                        .addOnSuccessListener { authResult ->
+                                            val profileUpdates = userProfileChangeRequest {
+                                                displayName = username.text.toString()
+                                            }
+                                            authResult.user?.updateProfile(profileUpdates)
+
+                                            val newUserRef = usersRef.child(authResult.user?.uid ?: "")
+                                            newUserRef.child("username").setValue(username.text.toString())
+                                            newUserRef.child("email").setValue(email.text.toString())
+                                            newUserRef.child("password").setValue(password.text.toString())
+                                            _currentUser.value = authResult.user
+                                            Toast.makeText(context, "Registration successful", Toast.LENGTH_LONG).show()
+                                            navController.navigate(R.id.loginFragment)
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Toast.makeText(context, "Error occurred: ${exception.message}", Toast.LENGTH_LONG).show()
+                                        }
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(context, "Error occurred: ${error.message}", Toast.LENGTH_LONG).show()
+                            }
+                        })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "Error occurred: ${error.message}", Toast.LENGTH_LONG).show()
+                }
+            })
         }
 
-        val database = FirebaseDatabase.getInstance()
-        val usersRef = database.getReference("users")
-
-        val queryRef = usersRef.orderByChild("email").equalTo(email.text.toString())
-
-        queryRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    Toast.makeText(context, "E-mail is already registered!", Toast.LENGTH_LONG)
-                        .show()
-                    email.text.clear()
-                } else {
-                    val usernameRef =
-                        usersRef.orderByChild("username").equalTo(username.text.toString())
-                    usernameRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                Toast.makeText(
-                                    context,
-                                    "Username is already taken!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                username.text.clear()
-                            } else {
-                                firebaseAuth.createUserWithEmailAndPassword(
-                                    email.text.toString(),
-                                    password.text.toString()
-                                )
-                                    .addOnSuccessListener { authResult ->
-                                        val profileUpdates = userProfileChangeRequest {
-                                            displayName = username.text.toString()
-                                        }
-                                        authResult.user?.updateProfile(profileUpdates)
-
-                                        val newUserRef = usersRef.child(authResult.user?.uid ?: "")
-                                        newUserRef.child("username")
-                                            .setValue(username.text.toString())
-                                        newUserRef.child("email").setValue(email.text.toString())
-                                        newUserRef.child("password")
-                                            .setValue(password.text.toString())
-                                        _currentUser.value = authResult.user
-                                        Toast.makeText(
-                                            context,
-                                            "Registration successful",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        navController.navigate(R.id.loginFragment)
-                                    }
-                                    .addOnFailureListener { exception ->
-                                        Toast.makeText(
-                                            context,
-                                            "Error occurred: ${exception.message}",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(
-                                context,
-                                "Error occurred: ${error.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    })
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Error occurred: ${error.message}", Toast.LENGTH_LONG)
-                    .show()
-            }
-        })
     }
 
     fun signIn(email: String, password: String) {
