@@ -6,12 +6,10 @@
 
         <!-- Status bar rengi -->
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
 
         <!-- Navigation bar rengi -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
-
-        <item name="android:windowLightStatusBar">true</item>
-
 
     </style>
 
