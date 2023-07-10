@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/splashFragment"
     android:id="@+id/main_nav_graph">
 
@@ -18,7 +19,11 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.arincatlamaz.chatconnect.view.LoginFragment"
-        android:label="fragment_login"/>
+        android:label="fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.arincatlamaz.chatconnect.view.SignUpFragment"
@@ -38,5 +43,10 @@
             android:id="@+id/onBoardingToLogin"
             app:destination="@id/loginFragment" />
     </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.arincatlamaz.chatconnect.view.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
 
 </navigation>

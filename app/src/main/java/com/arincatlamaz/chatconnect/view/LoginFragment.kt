@@ -25,7 +25,7 @@ class LoginFragment : Fragment() {
         binding.loginBtn.setOnClickListener{
             val authViewModel: AuthViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
-            authViewModel.signIn(binding.email, binding.password, requireContext())
+            authViewModel.signIn(binding.email, binding.password, requireContext(),navController = findNavController())
 
         }
 

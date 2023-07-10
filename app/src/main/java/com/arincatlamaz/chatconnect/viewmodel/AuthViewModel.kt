@@ -86,7 +86,7 @@ class AuthViewModel(application: Application) : BaseVM(application) {
 
     }
 
-    fun signIn(email: EditText, password: EditText, context: Context) {
+    fun signIn(email: EditText, password: EditText, context: Context, navController: NavController) {
         launch {
             try {
                 if (email.text.isNullOrEmpty() || password.text.isNullOrEmpty()){
@@ -96,6 +96,7 @@ class AuthViewModel(application: Application) : BaseVM(application) {
                     val authResult = firebaseAuth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
                         .addOnSuccessListener{
                             Toast.makeText(context,"Login successful",Toast.LENGTH_LONG).show()
+                            navController.navigate(R.id.homeActivity)
                         }
                         .addOnFailureListener{
                             Toast.makeText(context,"There is no user record corresponding to this identifier",Toast.LENGTH_LONG).show()
