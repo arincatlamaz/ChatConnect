@@ -15,8 +15,8 @@
     <string name="or">Or</string>
     <string name="username">Username</string>
     <string name="password_hint">**********</string>
-    <string name="email_hint">examplename@example.com</string>
-    <string name="username_hint">exampleusername</string>
+    <string name="email_hint">example@example.com</string>
+    <string name="username_hint">example</string>
     <string name="message">Message</string>
     <string name="calls">Calls</string>
     <string name="contacts">Contacts</string>

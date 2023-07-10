@@ -5,16 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.arincatlamaz.chatconnect.R
+import com.arincatlamaz.chatconnect.databinding.FragmentSignUpBinding
+import com.arincatlamaz.chatconnect.viewmodel.AuthViewModel
 
 class SignUpFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    private lateinit var binding: FragmentSignUpBinding
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+
+        binding.loginBtn.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
+        }
+
+
+        binding.signUpBtn.setOnClickListener {
+            val authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+            authViewModel.signUp(
+                binding.email,
+                binding.password,
+                binding.username,
+                requireContext(), navController = findNavController()
+            )
+
+        }
+
+        return binding.root
     }
 
 }
