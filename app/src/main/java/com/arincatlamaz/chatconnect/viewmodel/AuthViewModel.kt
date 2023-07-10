@@ -24,8 +24,6 @@ class AuthViewModel(application: Application) : BaseVM(application) {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _currentUser = MutableLiveData<FirebaseUser?>()
-    val currentUser: LiveData<FirebaseUser?> = _currentUser
-
 
     fun signUp(
         email: EditText,
@@ -51,7 +49,8 @@ class AuthViewModel(application: Application) : BaseVM(application) {
                         .show()
                     email.text.clear()
                 } else {
-                    val usernameRef = usersRef.orderByChild("username").equalTo(username.text.toString())
+                    val usernameRef =
+                        usersRef.orderByChild("username").equalTo(username.text.toString())
                     usernameRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
@@ -62,7 +61,10 @@ class AuthViewModel(application: Application) : BaseVM(application) {
                                 ).show()
                                 username.text.clear()
                             } else {
-                                firebaseAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
+                                firebaseAuth.createUserWithEmailAndPassword(
+                                    email.text.toString(),
+                                    password.text.toString()
+                                )
                                     .addOnSuccessListener { authResult ->
                                         val profileUpdates = userProfileChangeRequest {
                                             displayName = username.text.toString()
@@ -70,9 +72,11 @@ class AuthViewModel(application: Application) : BaseVM(application) {
                                         authResult.user?.updateProfile(profileUpdates)
 
                                         val newUserRef = usersRef.child(authResult.user?.uid ?: "")
-                                        newUserRef.child("username").setValue(username.text.toString())
+                                        newUserRef.child("username")
+                                            .setValue(username.text.toString())
                                         newUserRef.child("email").setValue(email.text.toString())
-                                        newUserRef.child("password").setValue(password.text.toString())
+                                        newUserRef.child("password")
+                                            .setValue(password.text.toString())
                                         _currentUser.value = authResult.user
                                         Toast.makeText(
                                             context,
