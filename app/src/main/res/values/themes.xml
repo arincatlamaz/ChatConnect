@@ -4,11 +4,11 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/white</item>
 
-        <!-- Status bar rengi -->
+        <!-- Status bar -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
-        <!-- Navigation bar rengi -->
+        <!-- Navigation bar -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
 
     </style>
