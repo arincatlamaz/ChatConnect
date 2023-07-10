@@ -88,7 +88,7 @@
                 android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/log_in"
+                android:text="@string/log_in_u"
                 android:textColor="#E6E2E2"
                 android:textSize="16sp"
                 android:textStyle="bold"

@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.arincatlamaz.chatconnect.R
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +24,7 @@ import kotlinx.coroutines.tasks.await
 class AuthViewModel(application: Application) : BaseVM(application) {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _currentUser = MutableLiveData<FirebaseUser?>()
+    val _currentUser = MutableLiveData<FirebaseUser?>()
 
     fun signUp(email: EditText, password: EditText, username: EditText, context: Context, navController: NavController) {
 
@@ -85,13 +86,28 @@ class AuthViewModel(application: Application) : BaseVM(application) {
 
     }
 
-    fun signIn(email: String, password: String) {
+    fun signIn(email: EditText, password: EditText, context: Context) {
         launch {
             try {
-                val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-                _currentUser.value = authResult.user
-            } catch (e: Exception) {
-                // Handle sign in error
+                if (email.text.isNullOrEmpty() || password.text.isNullOrEmpty()){
+                    Toast.makeText(context, "Please fill in all fields!", Toast.LENGTH_LONG).show()
+                    return@launch
+                } else{
+                    val authResult = firebaseAuth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
+                        .addOnSuccessListener{
+                            Toast.makeText(context,"Login successful",Toast.LENGTH_LONG).show()
+                        }
+                        .addOnFailureListener{
+                            Toast.makeText(context,"There is no user record corresponding to this identifier",Toast.LENGTH_LONG).show()
+                            email.text.clear()
+                            password.text.clear()
+                        }.await()
+
+                    _currentUser.value = authResult.user
+                }
+
+            } catch (e: FirebaseAuthException) {
+                Log.d("EXCEPTIONFB",e.message.toString())
             }
         }
     }

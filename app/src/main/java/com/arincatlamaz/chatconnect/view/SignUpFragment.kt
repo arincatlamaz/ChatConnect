@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.databinding.FragmentSignUpBinding
@@ -23,13 +24,15 @@ class SignUpFragment : Fragment() {
 
 
         binding.signUpBtn.setOnClickListener {
-            val authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+            val authViewModel: AuthViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
             authViewModel.signUp(
                 binding.email,
                 binding.password,
                 binding.username,
                 requireContext(), navController = findNavController()
             )
+
+
 
         }
 
