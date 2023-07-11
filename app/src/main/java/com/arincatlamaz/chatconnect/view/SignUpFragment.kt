@@ -22,17 +22,9 @@ class SignUpFragment : Fragment() {
             findNavController().navigate(R.id.loginFragment)
         }
 
-
         binding.signUpBtn.setOnClickListener {
             val authViewModel: AuthViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-            authViewModel.signUp(
-                binding.email,
-                binding.password,
-                binding.username,
-                requireContext(), navController = findNavController()
-            )
-
-
+            authViewModel.signUp(binding.email, binding.password, binding.username, requireContext(), navController = findNavController())
 
         }
 
