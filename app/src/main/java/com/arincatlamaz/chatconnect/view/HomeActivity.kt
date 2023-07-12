@@ -32,11 +32,6 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.contacts -> {
-                    navController.navigate(R.id.contactsFragment)
-                    true
-                }
-
                 R.id.settings -> {
                     navController.navigate(R.id.settingsFragment)
                     true

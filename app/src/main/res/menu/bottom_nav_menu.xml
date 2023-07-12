@@ -10,10 +10,6 @@
         android:icon="@drawable/call_icon"
         android:title="@string/calls"/>
 
-    <item
-        android:id="@+id/contacts"
-        android:icon="@drawable/contacts_icon"
-        android:title="@string/contacts"/>
 
     <item
         android:id="@+id/settings"
