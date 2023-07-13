@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.view.HomeActivity
-import com.arincatlamaz.chatconnect.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
