@@ -1,9 +1,12 @@
 package com.arincatlamaz.chatconnect.view
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -23,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setupNavigation()
         setupViewModel()
@@ -55,6 +59,7 @@ class HomeActivity : AppCompatActivity() {
         binding.recyclerviewListUsers.layoutManager = LinearLayoutManager(this)
         binding.constraintLayout2.setOnClickListener {
             binding.searchView.clearFocus()
+            hideKeyboard()
             adapter.clear()
         }
     }
@@ -83,5 +88,12 @@ class HomeActivity : AppCompatActivity() {
                 adapter.clear()
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
+        binding.searchView.text.clear()
     }
 }

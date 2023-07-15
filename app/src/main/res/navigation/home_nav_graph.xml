@@ -20,4 +20,9 @@
         android:name="com.arincatlamaz.chatconnect.view.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/messageDetailFragment"
+        android:name="com.arincatlamaz.chatconnect.view.MessageDetailFragment"
+        android:label="fragment_message_detail"
+        tools:layout="@layout/fragment_message_detail" />
 </navigation>

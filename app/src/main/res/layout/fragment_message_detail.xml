@@ -11,9 +11,12 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="409dp"
-            android:layout_height="750dp"
+            android:id="@+id/recyclerviewDetail"
+            android:layout_width="0dp"
+            android:layout_height="577dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +31,7 @@
             android:hint="Enter your message"
             android:inputType="text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerview" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerviewDetail" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="48dp"

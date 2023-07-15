@@ -2,9 +2,18 @@ package com.arincatlamaz.chatconnect.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraphNavigator
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.databinding.UserListItemBinding
 import com.arincatlamaz.chatconnect.model.User
+
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private val users: MutableList<User> = mutableListOf()
@@ -18,6 +27,11 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.bind(user)
+
+        holder.itemView.setOnClickListener {
+
+        }
+
     }
 
     override fun getItemCount(): Int {
