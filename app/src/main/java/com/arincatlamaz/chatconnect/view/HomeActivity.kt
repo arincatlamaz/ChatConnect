@@ -1,16 +1,8 @@
 package com.arincatlamaz.chatconnect.view
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.adapter.UserAdapter
 import com.arincatlamaz.chatconnect.databinding.ActivityHomeBinding
@@ -26,14 +18,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         setupNavigation()
-        setupViewModel()
-        setupRecyclerView()
-        setupSearchView()
 
-        observeSearchResults()
     }
 
     private fun setupNavigation() {
@@ -49,51 +35,5 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-    }
 
-    private fun setupRecyclerView() {
-        adapter = UserAdapter()
-        binding.recyclerviewListUsers.adapter = adapter
-        binding.recyclerviewListUsers.layoutManager = LinearLayoutManager(this)
-        binding.constraintLayout2.setOnClickListener {
-            binding.searchView.clearFocus()
-            hideKeyboard()
-            adapter.clear()
-        }
-    }
-
-    private fun setupSearchView() {
-        binding.searchView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d("beforeTextChanged", "beforeTextChanged")
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.searchUsers(p0.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                Log.d("afterTextChanged", "afterTextChanged")
-            }
-        })
-    }
-
-    private fun observeSearchResults() {
-        viewModel.searchResults.observe(this) { users ->
-            if (binding.searchView.text.isNotEmpty()) {
-                adapter.setUsers(users)
-            } else {
-                adapter.clear()
-            }
-        }
-    }
-
-    private fun hideKeyboard() {
-        val imm: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
-        binding.searchView.text.clear()
-    }
 }
