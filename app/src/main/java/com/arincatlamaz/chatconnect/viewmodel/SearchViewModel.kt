@@ -48,11 +48,4 @@ class SearchViewModel : ViewModel() {
             })
     }
 
-    /*fun displaySearchResults(users: List<User>) {
-        val resultText = StringBuilder()
-        for (user in users) {
-            resultText.append(user.username).append("\n")
-        }
-        Log.d("result:",resultText.toString())
-    }*/
 }

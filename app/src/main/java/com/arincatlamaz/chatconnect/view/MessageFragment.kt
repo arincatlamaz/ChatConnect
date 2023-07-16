@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arincatlamaz.chatconnect.adapter.UserAdapter
 import com.arincatlamaz.chatconnect.databinding.FragmentMessageBinding
+import com.arincatlamaz.chatconnect.model.User
 import com.arincatlamaz.chatconnect.viewmodel.SearchViewModel
 
 
@@ -25,18 +26,13 @@ class MessageFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMessageBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        setupViewModel()
         setupRecyclerView()
         setupSearchView()
         observeSearchResults()
 
         return binding.root
-    }
-
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
     private fun setupRecyclerView() {

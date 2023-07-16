@@ -13,7 +13,6 @@ import com.arincatlamaz.chatconnect.view.MessageFragmentDirections
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private val users: MutableList<User> = mutableListOf()
-    private lateinit var navController: NavController
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
