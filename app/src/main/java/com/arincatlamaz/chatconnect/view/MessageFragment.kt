@@ -10,12 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.adapter.UserAdapter
 import com.arincatlamaz.chatconnect.databinding.FragmentMessageBinding
 import com.arincatlamaz.chatconnect.viewmodel.SearchViewModel
@@ -33,7 +29,6 @@ class MessageFragment : Fragment() {
         setupViewModel()
         setupRecyclerView()
         setupSearchView()
-
         observeSearchResults()
 
         return binding.root

@@ -2,13 +2,18 @@ package com.arincatlamaz.chatconnect.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.arincatlamaz.chatconnect.databinding.UserListItemBinding
 import com.arincatlamaz.chatconnect.model.User
+import com.arincatlamaz.chatconnect.view.MessageFragmentDirections
 
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private val users: MutableList<User> = mutableListOf()
+    private lateinit var navController: NavController
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,7 +26,8 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         holder.bind(user)
 
         holder.itemView.setOnClickListener {
-
+            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment()
+            holder.itemView.findNavController().navigate(action)
         }
 
     }

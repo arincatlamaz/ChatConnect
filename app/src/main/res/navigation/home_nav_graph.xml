@@ -9,7 +9,11 @@
         android:id="@+id/messageFragment"
         android:name="com.arincatlamaz.chatconnect.view.MessageFragment"
         android:label="fragment_message"
-        tools:layout="@layout/fragment_message" />
+        tools:layout="@layout/fragment_message" >
+        <action
+            android:id="@+id/action_messageFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/callsFragment"
         android:name="com.arincatlamaz.chatconnect.view.CallsFragment"
