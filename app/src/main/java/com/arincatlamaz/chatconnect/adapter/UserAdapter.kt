@@ -1,5 +1,6 @@
 package com.arincatlamaz.chatconnect.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
@@ -24,9 +25,14 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         val user = users[position]
         holder.bind(user)
 
+        Log.d("List size:",itemCount.toString())
+
         holder.itemView.setOnClickListener {
             val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment()
             holder.itemView.findNavController().navigate(action)
+            Log.d("Item clicked", users[0].username)
+
+
         }
 
     }
