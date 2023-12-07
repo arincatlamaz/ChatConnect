@@ -4,21 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.arincatlamaz.chatconnect.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resumeWithException
+
 
 class SearchViewModel : ViewModel() {
 
     private val _searchResults = MutableLiveData<List<User>>()
     val searchResults: LiveData<List<User>> get() = _searchResults
-
     private val databaseRef = FirebaseDatabase.getInstance().reference.child("users")
     private var currentSearchQuery: String = ""
 
@@ -46,6 +42,31 @@ class SearchViewModel : ViewModel() {
                     Log.d("DBERROR", error.message)
                 }
             })
+    }
+
+    fun findUserIdByUsername(username: String, calback: (String) -> Unit) {
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.getReference("users")
+        val query = usersRef.orderByChild("username").equalTo(username)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (userSnapshot in dataSnapshot.children) {
+                        val uid = userSnapshot.key ?: return
+                        println("Kullanıcı adı: $username, UID: $uid")
+                        calback(uid)
+                        return
+                    }
+                } else {
+                    println("Kullanıcı adı '$username' ile eşleşen kullanıcı bulunamadı.")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Veritabanı hatası: ${databaseError.message}")
+            }
+        })
     }
 
 }

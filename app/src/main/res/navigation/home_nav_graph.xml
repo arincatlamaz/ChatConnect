@@ -28,5 +28,10 @@
         android:id="@+id/messageDetailFragment"
         android:name="com.arincatlamaz.chatconnect.view.MessageDetailFragment"
         android:label="fragment_message_detail"
-        tools:layout="@layout/fragment_message_detail" />
+        tools:layout="@layout/fragment_message_detail">
+        <argument
+            android:name="userId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

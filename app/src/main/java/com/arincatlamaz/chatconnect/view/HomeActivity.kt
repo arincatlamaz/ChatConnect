@@ -11,9 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.arincatlamaz.chatconnect.R
-import com.arincatlamaz.chatconnect.adapter.UserAdapter
 import com.arincatlamaz.chatconnect.databinding.ActivityHomeBinding
-import com.arincatlamaz.chatconnect.viewmodel.SearchViewModel
 
 class HomeActivity : AppCompatActivity() {
 

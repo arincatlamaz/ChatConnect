@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arincatlamaz.chatconnect.adapter.UserAdapter
 import com.arincatlamaz.chatconnect.databinding.FragmentMessageBinding
@@ -24,7 +25,7 @@ class MessageFragment : Fragment() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var adapter: UserAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMessageBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
@@ -35,10 +36,23 @@ class MessageFragment : Fragment() {
         return binding.root
     }
 
+    private fun navigateToMessageDetailFragment(userId: String) {
+        Log.d("MessageFragment", "Navigating to details with userId: $userId")
+        val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment(userId)
+        findNavController().navigate(action)
+    }
+
     private fun setupRecyclerView() {
         adapter = UserAdapter()
         binding.recyclerviewListUsers.adapter = adapter
         binding.recyclerviewListUsers.layoutManager = LinearLayoutManager(context)
+        adapter.setOnUserClickListener{username ->
+            viewModel.findUserIdByUsername(username){userId ->
+                navigateToMessageDetailFragment(userId)
+
+            }
+        }
+
 
         binding.searchView.onFocusChangeListener =
             OnFocusChangeListener { v, hasFocus ->

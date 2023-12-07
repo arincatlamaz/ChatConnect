@@ -3,17 +3,14 @@ package com.arincatlamaz.chatconnect.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.arincatlamaz.chatconnect.databinding.UserListItemBinding
 import com.arincatlamaz.chatconnect.model.User
-import com.arincatlamaz.chatconnect.view.MessageFragmentDirections
 
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private val users: MutableList<User> = mutableListOf()
+    private var onUserClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,19 +18,31 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         return UserViewHolder(binding)
     }
 
+    fun setOnUserClickListener(listener: (String) -> Unit) {
+        onUserClickListener = listener
+    }
+
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.bind(user)
 
-        Log.d("List size:",itemCount.toString())
+        Log.d("Clicked Item:",itemCount.toString())
 
         holder.itemView.setOnClickListener {
-            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment()
-            holder.itemView.findNavController().navigate(action)
-            Log.d("Item clicked", users[0].username)
+            onUserClickListener?.invoke(user.username)
+
 
 
         }
+
+        /*holder.itemView.setOnClickListener {
+            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment()
+            holder.itemView.findNavController().navigate(action)
+            Log.d("Item clicked", users[position].username)
+
+
+
+        }*/
 
     }
 
