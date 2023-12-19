@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.lifecycle.viewModelScope
 import com.arincatlamaz.chatconnect.adapter.MessageDetailAdapter
 import com.arincatlamaz.chatconnect.model.Chat
+import com.arincatlamaz.chatconnect.view.MessageDetailFragmentArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -20,17 +21,17 @@ import java.util.UUID
 
 class MessageViewModel(application: Application) : BaseVM(application) {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    val database = FirebaseDatabase.getInstance().getReference("users").child("${auth.currentUser?.uid}")
-    val dbchat = database.child("chat")
+    val database = FirebaseDatabase.getInstance()
+    val chatRef = database.getReference("ChatList")
 
-    fun sendMessage(msg: EditText){
+    fun sendMessage(msg: EditText, receiverId: String){
 
-        val uuid = UUID.randomUUID()
         viewModelScope.launch {
-            database.child("chat").child("$uuid").child("usermessage").setValue("${msg.text}")
-            database.child("chat").child("$uuid").child("username").setValue("${auth.currentUser?.displayName}")
-            database.child("chat").child("$uuid").child("usermessageTime").setValue(ServerValue.TIMESTAMP)
-
+            val uuid = UUID.randomUUID()
+            chatRef.child("$uuid").child("usermessage").setValue("${msg.text}")
+            chatRef.child("$uuid").child("sender").setValue(auth.currentUser?.uid)
+            chatRef.child("$uuid").child("receiver").setValue(receiverId)
+            chatRef.child("$uuid").child("usermessageTime").setValue(ServerValue.TIMESTAMP)
 
             msg.text.clear()
 
@@ -38,45 +39,34 @@ class MessageViewModel(application: Application) : BaseVM(application) {
 
     }
 
-    fun getData( adapter: MessageDetailAdapter){
-
-
+    fun getChats(adapter: MessageDetailAdapter, receiverId: String) {
         viewModelScope.launch {
-            val query: Query = dbchat.orderByChild("usermessageTime")
-            query.addValueEventListener(object : ValueEventListener{
+            val query: Query = chatRef.orderByChild("receiver").equalTo(receiverId)
+            query.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
+                    val messagesList = mutableListOf<Chat>()
                     adapter.clearItems()
+                    for (ds: DataSnapshot in snapshot.children) {
+                        val hashMap = ds.value as? HashMap<String, Any> ?: continue
+                        val chat = Chat(
+                            txtUsername = hashMap["sender"] as? String ?: "",
+                            chatText = hashMap["usermessage"] as? String ?: "",
+                            txtTime = hashMap["usermessageTime"] as? Long ?: 0L
 
-                    for (ds: DataSnapshot in snapshot.children){
-                        Log.d("Keyolla:", "${ds.value}")
-                        val hashMap = ds.value as? HashMap<String, String> ?: return
-
-                        val getDataUsername = hashMap.get("username")
-                        val getDataUserMessage = hashMap.get("usermessage")
-
-                        val chatmsg = Chat("$getDataUsername : $getDataUserMessage")
-                        adapter.addItem(chatmsg)
-
-                        adapter.notifyDataSetChanged()
-
-
+                        )
+                        messagesList.add(chat)
                     }
 
+                    messagesList.sortBy { it.txtTime }
+                    adapter.clearItems()
+                    messagesList.forEach{adapter.addItem(it)}
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("error", error.message)
                 }
-
             })
         }
-
-
-
     }
-
-
-
 
 }

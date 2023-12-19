@@ -3,10 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <TextView
-        android:text="Chat Message"
-        android:id="@+id/rw_item_textView"
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            android:text="@string/username"
+            android:id="@+id/rw_item_textUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_gravity="center"
+            android:textSize="13sp"
+            android:layout_marginStart="10dp"
+            android:text="@string/chat_message"
+            android:id="@+id/rw_item_chattext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 
 </FrameLayout>

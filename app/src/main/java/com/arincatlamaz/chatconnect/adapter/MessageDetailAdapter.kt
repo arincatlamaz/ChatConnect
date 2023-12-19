@@ -19,15 +19,12 @@ class MessageDetailAdapter : RecyclerView.Adapter<MessageDetailAdapter.DetailVie
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemChatBinding.inflate(inflater, parent, false)
 
-
         return DetailViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MessageDetailAdapter.DetailViewHolder, position: Int) {
         val chat = chats[position]
         holder.bind(chat)
-
-
 
     }
 
@@ -45,10 +42,12 @@ class MessageDetailAdapter : RecyclerView.Adapter<MessageDetailAdapter.DetailVie
         notifyItemInserted(chats.size - 1)
     }
 
+
     inner class DetailViewHolder(private val binding: ItemChatBinding):
         RecyclerView.ViewHolder(binding.root){
             fun bind(chat: Chat){
-                binding.rwItemTextView.text = chat.chatText
+                binding.rwItemChattext.text = chat.chatText
+                binding.rwItemTextUsername.text = chat.txtUsername
             }
 
     }

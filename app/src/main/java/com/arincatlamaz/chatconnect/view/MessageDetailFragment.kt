@@ -26,24 +26,28 @@ class MessageDetailFragment : Fragment() {
     private lateinit var binding: FragmentMessageDetailBinding
     private lateinit var adapter: MessageDetailAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMessageDetailBinding.inflate(inflater, container, false)
-
 
         messageViewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
 
+        val userId = arguments?.let { MessageDetailFragmentArgs.fromBundle(it).userId }
+        Log.d("Calling the userId:", "userid: ${userId.toString()}")
 
+        val str: String? = userId
 
         binding.sendButton.setOnClickListener{
 
-            messageViewModel.sendMessage(binding.editTextSendMessage)
+            if (str != null) {
+                messageViewModel.sendMessage(binding.editTextSendMessage, str)
+            }
 
 
         }
 
-//        setupDetailRecyclerView()
+        setupDetailRecyclerView(userId!!)
 
-        val userId = arguments?.let { MessageDetailFragmentArgs.fromBundle(it).userId }
+
 
 
         return binding.root
@@ -55,13 +59,13 @@ class MessageDetailFragment : Fragment() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
-    private fun setupDetailRecyclerView() {
+    private fun setupDetailRecyclerView(recId: String) {
 
         adapter = MessageDetailAdapter()
         binding.recyclerviewDetail.adapter = adapter
         binding.recyclerviewDetail.layoutManager = LinearLayoutManager(context)
 
-        messageViewModel.getData(adapter)
+        messageViewModel.getChats(adapter, recId)
 
 
 

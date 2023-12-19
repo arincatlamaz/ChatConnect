@@ -47,11 +47,13 @@ class MessageFragment : Fragment() {
         binding.recyclerviewListUsers.adapter = adapter
         binding.recyclerviewListUsers.layoutManager = LinearLayoutManager(context)
         adapter.setOnUserClickListener{username ->
-            viewModel.findUserIdByUsername(username){userId ->
+            viewModel.findUserIdByUsername(username){userId: String ->
                 navigateToMessageDetailFragment(userId)
 
             }
         }
+
+
 
 
         binding.searchView.onFocusChangeListener =

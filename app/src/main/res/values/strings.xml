@@ -23,5 +23,6 @@
     <string name="log_out">Log Out</string>
     <string name="enter_your_message">Enter your message</string>
     <string name="search_someone">Search someone</string>
+    <string name="chat_message">Chat Message</string>
 
 </resources>
