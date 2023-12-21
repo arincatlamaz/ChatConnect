@@ -1,53 +1,43 @@
 package com.arincatlamaz.chatconnect.view
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.arincatlamaz.chatconnect.R
 import com.arincatlamaz.chatconnect.adapter.MessageDetailAdapter
 import com.arincatlamaz.chatconnect.databinding.FragmentMessageDetailBinding
-import com.arincatlamaz.chatconnect.model.Chat
-import com.arincatlamaz.chatconnect.viewmodel.AuthViewModel
 import com.arincatlamaz.chatconnect.viewmodel.MessageViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class MessageDetailFragment : Fragment() {
 
     private lateinit var messageViewModel: MessageViewModel
     private lateinit var binding: FragmentMessageDetailBinding
     private lateinit var adapter: MessageDetailAdapter
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMessageDetailBinding.inflate(inflater, container, false)
-
         messageViewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
-
         val userId = arguments?.let { MessageDetailFragmentArgs.fromBundle(it).userId }
-        Log.d("Calling the userId:", "userid: ${userId.toString()}")
-
         val str: String? = userId
 
-        binding.sendButton.setOnClickListener{
-
+        binding.sendButton.setOnClickListener {
             if (str != null) {
                 messageViewModel.sendMessage(binding.editTextSendMessage, str)
             }
-
-
         }
 
         setupDetailRecyclerView(userId!!)
-
-
 
 
         return binding.root
@@ -60,18 +50,17 @@ class MessageDetailFragment : Fragment() {
     }
 
     private fun setupDetailRecyclerView(recId: String) {
-
         adapter = MessageDetailAdapter()
+        val layoutManager = LinearLayoutManager(context)
+        binding.recyclerviewDetail.layoutManager = layoutManager
         binding.recyclerviewDetail.adapter = adapter
-        binding.recyclerviewDetail.layoutManager = LinearLayoutManager(context)
 
-        messageViewModel.getChats(adapter, recId)
-
-
-
+        messageViewModel.getChats(recId) { messagesList ->
+            adapter.clearItems()
+            messagesList.forEach { adapter.addItem(it) }
+            binding.recyclerviewDetail.layoutManager?.scrollToPosition(adapter.itemCount - 1)
+        }
     }
-
-
 
 
 }
