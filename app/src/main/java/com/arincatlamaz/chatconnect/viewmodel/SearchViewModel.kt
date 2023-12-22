@@ -1,6 +1,7 @@
 package com.arincatlamaz.chatconnect.viewmodel
 
 import android.util.Log
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,16 +25,19 @@ class SearchViewModel : ViewModel() {
     }
 
     private fun fetchUsers() {
+        val formattedQuery = currentSearchQuery.trim().toLowerCase()
         databaseRef.orderByChild("username")
-            .startAt(currentSearchQuery)
-            .endAt(currentSearchQuery + "\uf8ff")
+            .startAt(formattedQuery)
+            .endAt(formattedQuery + "\uf8ff")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val users = mutableListOf<User>()
                     for (snapshot in dataSnapshot.children) {
-                        val username = snapshot.child("username").value.toString()
-                        val user = User(username)
-                        users.add(user)
+                        val username = snapshot.child("username").value.toString().toLowerCase()
+                        if (username.startsWith(formattedQuery)) {
+                            val user = User(username)
+                            users.add(user)
+                        }
                     }
                     _searchResults.value = users
                 }

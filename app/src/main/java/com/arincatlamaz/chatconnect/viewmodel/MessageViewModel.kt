@@ -40,7 +40,7 @@ class MessageViewModel(application: Application) : BaseVM(application) {
     /*
      *Getting messages via filtering receiver and sender ID's
      */
-    fun getChats(otherUserId: String, onMessagesReceived: (List<Chat>) -> Unit) {
+    fun getChatsFromFBtoDetail(otherUserId: String, onMessagesReceived: (List<Chat>) -> Unit) {
         viewModelScope.launch {
             chatRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

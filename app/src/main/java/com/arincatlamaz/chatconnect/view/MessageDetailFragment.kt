@@ -55,7 +55,7 @@ class MessageDetailFragment : Fragment() {
         binding.recyclerviewDetail.layoutManager = layoutManager
         binding.recyclerviewDetail.adapter = adapter
 
-        messageViewModel.getChats(recId) { messagesList ->
+        messageViewModel.getChatsFromFBtoDetail(recId) { messagesList ->
             adapter.clearItems()
             messagesList.forEach { adapter.addItem(it) }
             binding.recyclerviewDetail.layoutManager?.scrollToPosition(adapter.itemCount - 1)

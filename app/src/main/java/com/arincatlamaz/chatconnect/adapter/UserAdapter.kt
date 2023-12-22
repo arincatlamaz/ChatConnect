@@ -30,19 +30,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
         holder.itemView.setOnClickListener {
             onUserClickListener?.invoke(user.username)
-
-
-
         }
-
-        /*holder.itemView.setOnClickListener {
-            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment()
-            holder.itemView.findNavController().navigate(action)
-            Log.d("Item clicked", users[position].username)
-
-
-
-        }*/
 
     }
 
