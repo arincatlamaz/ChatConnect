@@ -19,9 +19,9 @@ class MessageViewModel(application: Application) : BaseVM(application) {
     val database = FirebaseDatabase.getInstance()
     val chatRef = database.getReference("ChatList")
 
-    /*
-     * Creating child in db and sending inserted info.
-     */
+/**
+ * Creating child in db and sending inserted info.
+ */
     fun sendMessage(msg: EditText, receiverId: String) {
 
         viewModelScope.launch {
@@ -34,10 +34,9 @@ class MessageViewModel(application: Application) : BaseVM(application) {
             msg.text.clear()
 
         }
-
     }
 
-    /*
+    /**
      *Getting messages via filtering receiver and sender ID's
      */
     fun getChatsFromFBtoDetail(otherUserId: String, onMessagesReceived: (List<Chat>) -> Unit) {
@@ -77,27 +76,27 @@ class MessageViewModel(application: Application) : BaseVM(application) {
         }
     }
 
-    /*
-     * Finding which ID belongs to which username.
-     */
+/**
+ * Finding which ID belongs to which username.
+ */
     fun getUsernameForId(userId: String, onUsernameReceived: (String) -> Unit) {
-        viewModelScope.launch {
-            val userRef = database.getReference("users").child(userId)
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val username = snapshot.child("username").getValue(String::class.java)
-                    if (username != null) {
-                        onUsernameReceived(username)
-                    } else {
-                        Log.e("getUsernameForId", "Username for $userId not found")
-                    }
+        val database = FirebaseDatabase.getInstance().getReference("users").child(userId)
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val username = snapshot.child("username").getValue(String::class.java)
+                if (username != null) {
+                    onUsernameReceived(username)
+                } else {
+                    Log.e("getUsernameForId", "Username for $userId not found")
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("error", error.message)
-                }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error", error.message)
+            }
 
-            })
-        }
+        })
     }
+
+
 }

@@ -6,6 +6,7 @@
         android:title="@string/message"/>
 
     <item
+        android:visible="false"
         android:id="@+id/calls"
         android:icon="@drawable/call_icon"
         android:title="@string/calls"/>

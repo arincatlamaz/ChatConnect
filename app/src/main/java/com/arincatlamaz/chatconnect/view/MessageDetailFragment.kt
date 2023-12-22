@@ -7,19 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arincatlamaz.chatconnect.adapter.MessageDetailAdapter
 import com.arincatlamaz.chatconnect.databinding.FragmentMessageDetailBinding
 import com.arincatlamaz.chatconnect.viewmodel.MessageViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 class MessageDetailFragment : Fragment() {
 
     private lateinit var messageViewModel: MessageViewModel
     private lateinit var binding: FragmentMessageDetailBinding
     private lateinit var adapter: MessageDetailAdapter
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +33,11 @@ class MessageDetailFragment : Fragment() {
             if (str != null) {
                 messageViewModel.sendMessage(binding.editTextSendMessage, str)
             }
+        }
+
+        binding.backButton.setOnClickListener {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("needToClearSearchView", true)
+            findNavController().navigateUp()
         }
 
         setupDetailRecyclerView(userId!!)
